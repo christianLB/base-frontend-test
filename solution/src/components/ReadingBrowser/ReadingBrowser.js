@@ -43,7 +43,7 @@ class ReadingBrowser extends Component {
                         <Chart reading={reading}
                             indexUpdated={indexUpdated}
                             width={mainCont.current.clientWidth}
-                            height={350}
+                            height={400}
                         />
                         {
                             results &&
@@ -63,7 +63,7 @@ class ReadingBrowser extends Component {
                             </Fragment>
                         }
                         {
-                            !results && <h2>No results</h2>
+                            !results && <h2 className='display-5 noresults'>No results</h2>
                         }
                     </Fragment>
                 }
