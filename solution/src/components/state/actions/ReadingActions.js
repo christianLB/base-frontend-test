@@ -35,13 +35,19 @@ export const updateReadingAction = (newReading, index) => ({
     payload: () => {
         newReading.value1 = parseFloat(parseFloat(newReading.value1).toFixed(2));
         newReading.value2 = parseFloat(parseFloat(newReading.value2).toFixed(2));
-        return fetch(apiUrl, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newReading)
-        }).then(reading => reading);
+
+        return new Promise(resolve => setTimeout(() => {
+            fetch(apiUrl, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newReading)
+            }).then(reading => {
+                resolve(reading);
+            });
+        }
+            , 1000));
     }
 });

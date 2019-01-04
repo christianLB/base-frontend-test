@@ -30,7 +30,7 @@ class ReadingBrowser extends Component {
     }
 
     render() {
-        const { reading, fetched, fetching, failed, indexUpdated, results } = this.props;
+        const { reading, fetched, fetching, fetchFailed, indexUpdated, updatingId, results } = this.props;
         const { mainCont, changeRange } = this;
         return (
             <div ref={mainCont}>
@@ -46,6 +46,9 @@ class ReadingBrowser extends Component {
                             height={400}
                         />
                         {
+                            fetchFailed && <Error message="Failed to fetch reading" />
+                        }
+                        {
                             results &&
                             <Fragment>
                                 <div className="list-group animated fadeIn">
@@ -58,7 +61,7 @@ class ReadingBrowser extends Component {
                                     </a>
                                 </div>
                                 <div className='roller'>
-                                    <ReadingList reading={reading} />
+                                    <ReadingList reading={reading} updatingId={updatingId}/>
                                 </div>
                             </Fragment>
                         }
@@ -68,10 +71,7 @@ class ReadingBrowser extends Component {
                     </Fragment>
                 }
                 {
-                    <LoadingIndicator busy={fetching} />
-                }
-                {
-                    failed && <Error message="Failed to fetch reading" />
+                    <LoadingIndicator busy={fetching} size={4} left={'50%'} />
                 }
             </div>
         );
@@ -83,17 +83,39 @@ ReadingBrowser.propTypes = {
     changeRangeAction: PropTypes.func.isRequired,
     fetched: PropTypes.bool.isRequired,
     fetching: PropTypes.bool.isRequired,
-    failed: PropTypes.bool,
+    fetchFailed: PropTypes.bool,
     reading: PropTypes.array.isRequired,
     range: PropTypes.object.isRequired,
     results: PropTypes.bool.isRequired,
-    indexUpdated: PropTypes.number.isRequired
+    updating: PropTypes.bool.isRequired,
+    indexUpdated: PropTypes.number.isRequired,
+    updatingId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => {
-    const { fetching, fetched, failed, reading, range, indexUpdated, updating, results } = state.readings;
+    const {
+        fetching,
+        fetched,
+        fetchFailed,
+        reading,
+        range,
+        indexUpdated,
+        updating,
+        updateFailed,
+        updatingId,
+        results } = state.readings;
 
-    return { fetching, fetched, failed, reading, range, indexUpdated, updating, results };
+    return {
+        fetching,
+        fetched,
+        fetchFailed,
+        reading,
+        range,
+        indexUpdated,
+        updating,
+        updateFailed,
+        updatingId,
+        results };
 };
 const mapDispatchToProps = dispatch => (
     bindActionCreators({ changeRangeAction, fetchReadingAction  }, dispatch)

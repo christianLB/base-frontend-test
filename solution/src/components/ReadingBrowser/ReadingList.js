@@ -6,27 +6,27 @@ import PropTypes from 'prop-types';
 
 import { ReadingListItem } from './ReadingListItem';
 
-
-// COMPONENT
 class ReadingList extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
+        const { reading, updatingId } = this.props;
         return <Fragment>
-            {renderList(this.props.reading)}
+            {renderList(reading, updatingId)}
         </Fragment>;
     }
 }
 
-const renderList = reading => (
+const renderList = (reading, updatingId, updating) => (
     <div className="list-group animated fadeIn">
-        {reading.map((read, i) => renderListItem(read, i))}
+        {reading.map((read, i) => renderListItem(read, i, updatingId), updating)}
     </div>
 );
 
-const renderListItem = (read, index) => (
+
+const renderListItem = (read, index, updatingId = '', updating = false) => (
     <Fragment key={read.id}>
         <ReadingListItem
             timestamp={read.timestamp}
@@ -34,13 +34,15 @@ const renderListItem = (read, index) => (
             value2={read.value2}
             id={read.id}
             index={index}
-            updating={false}
+            updating={updating}
+            updatingId={updatingId}
         />
     </Fragment>
 );
 
 ReadingList.propTypes = {
-    reading: PropTypes.array.isRequired
+    reading: PropTypes.array.isRequired,
+    updatingId: PropTypes.string.isRequired
 };
 
 export { ReadingList };

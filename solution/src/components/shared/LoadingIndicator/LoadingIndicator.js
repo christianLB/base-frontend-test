@@ -6,22 +6,30 @@ import PropTypes from 'prop-types';
 
 // COMPONENT
 
-const LoadingIndicator = (props) => (
-    <div>
-        {
-            props.busy &&
-            <div style={{ top: '50%', left: '50%', textAlign: 'center', color: 'dodgerblue', position: 'absolute', transform: 'translate(-50%, 0)' }}>
-                <i className="fa fa-spinner fa-spin fa-4x fa-fw"></i>
-            </div>
-        }
-    </div>
-);
+const LoadingIndicator = (props) => {
+    const { size, right = '', top = '50%', left = '', transform = 'translate(-50%, 0)', busy} = props;
+    return (
+        <div>
+            {
+                busy &&
+                <div style={{ top: top, left: left, right: right, textAlign: 'center', color: 'dodgerblue', position: 'absolute', transform: transform }}>
+                    <i className={`fa fa-spinner fa-spin fa-${size}x fa-fw}`}></i>
+                </div>
+            }
+        </div>
+    );
+};
 
 
 // CONFIGURE COMPONENT PROP TYPES
 
 LoadingIndicator.propTypes = {
-    busy: PropTypes.bool
+    busy: PropTypes.bool,
+    size: PropTypes.number,
+    top: PropTypes.string,
+    left: PropTypes.string,
+    right: PropTypes.String,
+    transform: PropTypes.string
 };
 
 

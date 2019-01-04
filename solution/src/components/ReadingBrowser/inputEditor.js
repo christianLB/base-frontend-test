@@ -60,20 +60,22 @@ export class InputEditor extends Component {
 
     renderInput = () => {
         const { defaultValue } = this.props;
-        if (this.state.edit) {
+        const { handleBlur, handleSubmit, handleFocus, ref, state, toggleEdit } = this;
+
+        if (state.edit) {
             return <input
                 className={'editbox'}
-                onKeyPress={this.handleSubmit}
-                onBlur={this.handleBlur}
-                onFocus={this.handleFocus}
+                onKeyPress={handleSubmit}
+                onBlur={handleBlur}
+                onFocus={handleFocus}
                 type='text'
                 defaultValue={defaultValue}
                 tabIndex={0}
-                ref={this.ref}
+                ref={ref}
             />;
         } else {
             return <h5
-                onClick={this.toggleEdit}
+                onClick={toggleEdit}
                 className="mb-1">{defaultValue}</h5>;
         }
     }
