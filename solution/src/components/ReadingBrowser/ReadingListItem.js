@@ -22,7 +22,7 @@ class ReadingListItem extends Component {
         const inputValue1 = parseFloat(this.input1.current.getValue());
         const inputValue2 = parseFloat(this.input2.current.getValue());
         const mustUpdate = value1 !== inputValue1 || value2 !== inputValue2;
-        console.log(value1, inputValue1, value2, inputValue2, mustUpdate);
+        
         if (mustUpdate) {//fire update action
             this.props.updateReadingAction({
                 id: this.props.id,
