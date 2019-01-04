@@ -29,9 +29,9 @@ export const fetchReadingAction = (range) => ({
     }
 });
 
-export const updateReadingAction = (newReading, index) => ({
+export const updateReadingAction = (newReading) => ({
     type: UPDATE_READING,
-    meta: {newReading, index},
+    meta: newReading,
     payload: () => {
         newReading.value1 = parseFloat(parseFloat(newReading.value1).toFixed(2));
         newReading.value2 = parseFloat(parseFloat(newReading.value2).toFixed(2));

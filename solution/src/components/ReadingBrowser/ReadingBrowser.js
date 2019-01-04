@@ -30,7 +30,7 @@ class ReadingBrowser extends Component {
     }
 
     render() {
-        const { reading, fetched, fetching, fetchFailed, indexUpdated, updatingId, results } = this.props;
+        const { reading, fetched, fetching, fetchFailed, updatingId, results } = this.props;
         const { mainCont, changeRange } = this;
         return (
             <div ref={mainCont}>
@@ -41,7 +41,6 @@ class ReadingBrowser extends Component {
                     fetched &&
                     <Fragment>
                         <Chart reading={reading}
-                            indexUpdated={indexUpdated}
                             width={mainCont.current.clientWidth}
                             height={400}
                         />
@@ -88,7 +87,6 @@ ReadingBrowser.propTypes = {
     range: PropTypes.object.isRequired,
     results: PropTypes.bool.isRequired,
     updating: PropTypes.bool.isRequired,
-    indexUpdated: PropTypes.number.isRequired,
     updatingId: PropTypes.string.isRequired,
 };
 
@@ -99,7 +97,6 @@ const mapStateToProps = state => {
         fetchFailed,
         reading,
         range,
-        indexUpdated,
         updating,
         updateFailed,
         updatingId,
@@ -111,7 +108,6 @@ const mapStateToProps = state => {
         fetchFailed,
         reading,
         range,
-        indexUpdated,
         updating,
         updateFailed,
         updatingId,

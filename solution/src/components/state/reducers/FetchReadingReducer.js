@@ -20,7 +20,6 @@ const initialState = {
     fetchFailed: false,
     updating: false,
     updateFailed: false,
-    indexUpdated: -1,
     updatingId: '',
     results: false,
     range: {
@@ -30,19 +29,14 @@ const initialState = {
 };
 
 
-const updateReading = (reading, newReading, index) => {
+const updateReading = (reading, newReading) => {
+    const index = reading.findIndex(elem => elem.id === newReading.id);
     reading[index].value1 = newReading.value1;
     reading[index].value2 = newReading.value2;
-    reading[index].updating = false;
     return reading;
 };
 
 // REDUCER
-const setUpdating = (reading, index) => {
-    reading[index].updating = true;
-    return reading;
-};
-
 export const FetchReadingReducer = (state = initialState, action) => {
     switch(action.type) {
         case FETCH_READING_PENDING:
@@ -73,17 +67,15 @@ export const FetchReadingReducer = (state = initialState, action) => {
             return {
                 ...state,
                 updating: true,
-                updatingId: action.meta.newReading.id,
-                reading: setUpdating(state.reading, action.meta.index)
+                updatingId: action.meta.id
             };
         case UPDATE_READING_FULFILLED:
             return {
                 ...state,
                 updating: false,
                 updateFailed: false,
-                indexUpdated: action.meta.index,
                 updatingId: '',
-                reading: updateReading(state.reading, action.meta.newReading, action.meta.index)
+                reading: updateReading(state.reading, action.meta)
             };
         case UPDATE_READING_REJECTED:
             return {

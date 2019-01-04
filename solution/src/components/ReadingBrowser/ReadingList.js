@@ -12,37 +12,33 @@ class ReadingList extends Component {
     }
 
     render() {
-        const { reading, updatingId } = this.props;
+        const { reading } = this.props;
         return <Fragment>
-            {renderList(reading, updatingId)}
+            {renderList(reading)}
         </Fragment>;
     }
 }
 
 const renderList = (reading, updatingId, updating) => (
     <div className="list-group animated fadeIn">
-        {reading.map((read, i) => renderListItem(read, i, updatingId), updating)}
+        {reading.map(read => renderListItem(read, updatingId), updating)}
     </div>
 );
 
 
-const renderListItem = (read, index, updatingId = '', updating = false) => (
+const renderListItem = (read) => (
     <Fragment key={read.id}>
         <ReadingListItem
             timestamp={read.timestamp}
             value1={read.value1}
             value2={read.value2}
             id={read.id}
-            index={index}
-            updating={updating}
-            updatingId={updatingId}
         />
     </Fragment>
 );
 
 ReadingList.propTypes = {
-    reading: PropTypes.array.isRequired,
-    updatingId: PropTypes.string.isRequired
+    reading: PropTypes.array.isRequired
 };
 
 export { ReadingList };

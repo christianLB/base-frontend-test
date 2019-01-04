@@ -22,14 +22,14 @@ class ReadingListItem extends Component {
         const inputValue1 = parseFloat(this.input1.current.getValue());
         const inputValue2 = parseFloat(this.input2.current.getValue());
         const mustUpdate = value1 !== inputValue1 || value2 !== inputValue2;
-        
+
         if (mustUpdate) {//fire update action
             this.props.updateReadingAction({
                 id: this.props.id,
                 value1: this.input1.current.getValue(),
                 value2: this.input2.current.getValue(),
                 timestamp: this.props.timestamp
-            }, this.props.index);
+            });
         }
     }
 
@@ -86,17 +86,16 @@ ReadingListItem.propTypes = {
     value1: PropTypes.number.isRequired,
     value2: PropTypes.number.isRequired,
     timestamp: PropTypes.string.isRequired,
-    updating: PropTypes.bool.isRequired,
-    updatingId: PropTypes.string.isRequired,
-    updateReadingAction: PropTypes.func.isRequired,
-    index: PropTypes.number.isRequired
+    updating: PropTypes.bool,
+    updatingId: PropTypes.string,
+    updateReadingAction: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
-    // I use ownProps here because index to refer to the specific piece of state to update,
-    // comes from outside so, is a prop of the component itself.
-    const { updatingId, updating } = state.readings;
-    const { id, value1, value2, timestamp } = state.readings.reading[ownProps.index];
+    //use ownProps.id to select the specific piece of state to update to props by filtering.
+    const { readings } = state;
+    const { updatingId, updating, reading } = readings;
+    const { id, value1, value2, timestamp } = reading[reading.findIndex(elem => elem.id === ownProps.id)];
 
     return { id, value1, value2, timestamp, updatingId, updating };
 };

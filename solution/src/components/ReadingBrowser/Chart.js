@@ -93,13 +93,13 @@ Chart.propTypes = {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     reading: PropTypes.array.isRequired,
-    indexUpdated: PropTypes.number.isRequired,
+    updatingId: PropTypes.bool,
     updateReadingAction: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => {
-    const { reading } = state.readings;
+    const { reading, updating } = state.readings;
 
-    return { reading };
+    return { reading, updating };
 };
 const mapDispatchToProps = dispatch => (
     bindActionCreators({ updateReadingAction }, dispatch)
