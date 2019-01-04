@@ -18,12 +18,19 @@ class ReadingListItem extends Component {
     }
 
     updateReading() {
-        this.props.updateReadingAction({
-            id: this.props.id,
-            value1: this.input1.current.getValue(),
-            value2: this.input2.current.getValue(),
-            timestamp: this.props.timestamp
-        }, this.props.index);
+        const { value1, value2 } = this.props;
+        const inputValue1 = parseFloat(this.input1.current.getValue());
+        const inputValue2 = parseFloat(this.input2.current.getValue());
+        const mustUpdate = value1 !== inputValue1 || value2 !== inputValue2;
+        console.log(value1, inputValue1, value2, inputValue2, mustUpdate);
+        if (mustUpdate) {//fire update action
+            this.props.updateReadingAction({
+                id: this.props.id,
+                value1: this.input1.current.getValue(),
+                value2: this.input2.current.getValue(),
+                timestamp: this.props.timestamp
+            }, this.props.index);
+        }
     }
 
     render() {
@@ -44,7 +51,7 @@ class ReadingListItem extends Component {
                                 <LoadingIndicator busy={thisUpdating} top={'10'} left={'54%'} size={1} />
                             </h5>
                             <h5 className="mb-1">
-                                <LoadingIndicator busy={thisUpdating} top={'10'} right={'5%'} size={1} />
+                                <LoadingIndicator busy={thisUpdating} top={'10'} right={'2%'} size={1} />
                             </h5>
                         </Fragment>
                     }

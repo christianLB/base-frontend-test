@@ -28,7 +28,7 @@ LoadingIndicator.propTypes = {
     size: PropTypes.number,
     top: PropTypes.string,
     left: PropTypes.string,
-    right: PropTypes.String,
+    right: PropTypes.string,
     transform: PropTypes.string
 };
 
