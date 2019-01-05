@@ -67,20 +67,23 @@ export const FetchReadingReducer = (state = initialState, action) => {
             return {
                 ...state,
                 updating: true,
-                updatingId: action.meta.id
+                updatingId: action.meta.id,
+                updateFailed: false
             };
         case UPDATE_READING_FULFILLED:
             return {
                 ...state,
                 updating: false,
-                updateFailed: false,
+                //updateFailed: false,
                 updatingId: '',
                 reading: updateReading(state.reading, action.meta)
             };
         case UPDATE_READING_REJECTED:
             return {
                 ...state,
-                updateFailed: true
+                updating: false,
+                updateFailed: true,
+                reading: updateReading(state.reading, action.meta)
             };
         case RANGE_CHANGE:
             return {

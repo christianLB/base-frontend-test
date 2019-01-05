@@ -59,10 +59,10 @@ export class InputEditor extends Component {
     }
 
     renderInput = () => {
-        const { defaultValue } = this.props;
+        const { defaultValue, edit } = this.props;
         const { handleBlur, handleSubmit, handleFocus, ref, state, toggleEdit } = this;
 
-        if (state.edit) {
+        if (state.edit || edit) {
             return <input
                 className={'editbox'}
                 onKeyPress={handleSubmit}
@@ -92,5 +92,6 @@ InputEditor.propTypes = {
     onChange: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
     fieldName: PropTypes.string.isRequired,
-    defaultValue: PropTypes.string.isRequired
+    defaultValue: PropTypes.string.isRequired,
+    edit: PropTypes.bool.isRequired
 };

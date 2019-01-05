@@ -34,12 +34,13 @@ class ReadingListItem extends Component {
     }
 
     render() {
-        const { id, timestamp, value1, value2, updatingId, updating } = this.props;
+        const { updateReading, input1, input2 } = this;
+        const { id, timestamp, value1, value2, updatingId, updating, updateFailed } = this.props;
         const fromatTimestamp = moment(timestamp).format('D/M/YYYY, h:mm');
         const thisUpdating = updating && updatingId === id;
-
+        const saveFailed = updateFailed && updatingId === id;
         return (
-            <a href="#" id={id} className="list-group-item list-group-item-action flex-row align-items-start">
+            <a href="#" id={id} className={`list-group-item list-group-item-action flex-row align-items-start ${saveFailed?'saveFailed':''}`}>
                 <div className="d-flex w-100 justify-content-between" tabIndex={-1}>
                     {
                         thisUpdating &&
@@ -60,15 +61,17 @@ class ReadingListItem extends Component {
                         <Fragment>
                             <h5 className="mb-1">{fromatTimestamp}</h5>
                             <InputEditor
-                                ref={this.input1}
-                                onChange={this.updateReading}
+                                ref={input1}
+                                onChange={updateReading}
                                 enabled={!updating}
+                                edit={saveFailed}
                                 defaultValue={parseFloat(value1).toFixed(2)}
                                 fieldName={'value1'}
                                 id={id} />
                             <InputEditor
-                                ref={this.input2}
-                                onChange={this.updateReading}
+                                ref={input2}
+                                onChange={updateReading}
+                                edit={saveFailed}
                                 enabled={!updating}
                                 defaultValue={parseFloat(value2).toFixed(2)}
                                 fieldName={'value2'}
@@ -88,16 +91,16 @@ ReadingListItem.propTypes = {
     timestamp: PropTypes.string.isRequired,
     updating: PropTypes.bool,
     updatingId: PropTypes.string,
+    updateFailed: PropTypes.bool,
     updateReadingAction: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => {
     //use ownProps.id to select the specific piece of state to update to props by filtering.
     const { readings } = state;
-    const { updatingId, updating, reading } = readings;
+    const { updatingId, updating, reading, updateFailed } = readings;
     const { id, value1, value2, timestamp } = reading[reading.findIndex(elem => elem.id === ownProps.id)];
-
-    return { id, value1, value2, timestamp, updatingId, updating };
+    return { id, value1, value2, timestamp, updatingId, updating, updateFailed };
 };
 const mapDispatchToProps = dispatch => (
     bindActionCreators({ updateReadingAction }, dispatch)

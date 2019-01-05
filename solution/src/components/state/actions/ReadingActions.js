@@ -9,6 +9,7 @@ export const FETCH_READING = 'FETCH_READING';
 export const UPDATE_READING = 'UPDATE_READING';
 export const UPDATE_READING_PENDING = 'UPDATE_READING_PENDING';
 export const UPDATE_READING_FULFILLED = 'UPDATE_READING_FULFILLED';
+export const UPDATE_READING_REJECTED = 'UPDATE_READING_REJECTED';
 export const UPDATE_READING_FAILURE = 'UPDATE_READING_FAILURE';
 export const RANGE_CHANGE = 'RANGE_CHANGE';
 // ACTION GENERATORS
@@ -33,21 +34,29 @@ export const updateReadingAction = (newReading) => ({
     type: UPDATE_READING,
     meta: newReading,
     payload: () => {
+        const fail = false;
+        const delay = 1000;
+
         newReading.value1 = parseFloat(parseFloat(newReading.value1).toFixed(2));
         newReading.value2 = parseFloat(parseFloat(newReading.value2).toFixed(2));
 
-        return new Promise(resolve => setTimeout(() => {
-            fetch(apiUrl, {
+        //delayed promise used to show spinner for a second
+        if (fail) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    reject('forced');
+                }, delay);
+            });
+        } else {
+            return fetch(apiUrl, {
                 method: 'PUT',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'mode': 'no-cors'
                 },
                 body: JSON.stringify(newReading)
-            }).then(reading => {
-                resolve(reading);
             });
         }
-            , 1000));
     }
 });
