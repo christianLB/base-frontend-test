@@ -12,8 +12,8 @@ export const UPDATE_READING_FULFILLED = 'UPDATE_READING_FULFILLED';
 export const UPDATE_READING_REJECTED = 'UPDATE_READING_REJECTED';
 export const UPDATE_READING_FAILURE = 'UPDATE_READING_FAILURE';
 export const RANGE_CHANGE = 'RANGE_CHANGE';
-// ACTION GENERATORS
-// COMPONENT
+export const CLEAR_UPDATED = 'CLEAR_UPDATED';
+
 const apiUrl = 'http://localhost:8080/reading';
 const dateFormat = 'YYYY-MM-DDTHH:mm:ss';
 
@@ -28,6 +28,10 @@ export const fetchReadingAction = (range) => ({
         return fetch(`${apiUrl}?start=${range.start.format(dateFormat)}&end=${range.end.format(dateFormat)}`)
             .then(response => response.json());
     }
+});
+
+export const clearUpdatedAction = () => ({
+    type: CLEAR_UPDATED
 });
 
 export const updateReadingAction = (newReading) => ({
@@ -48,14 +52,20 @@ export const updateReadingAction = (newReading) => ({
                 }, delay);
             });
         } else {
-            return fetch(apiUrl, {
-                method: 'PUT',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'mode': 'no-cors'
-                },
-                body: JSON.stringify(newReading)
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    return fetch(apiUrl, {
+                        method: 'PUT',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'mode': 'no-cors'
+                        },
+                        body: JSON.stringify(newReading)
+                    }).then(() => {
+                        return resolve();
+                    });
+                }, delay);
             });
         }
     }

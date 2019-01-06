@@ -7,7 +7,8 @@ import {
     UPDATE_READING_PENDING,
     UPDATE_READING_FULFILLED,
     UPDATE_READING_REJECTED,
-    RANGE_CHANGE
+    RANGE_CHANGE,
+    CLEAR_UPDATED
 } from '../actions/ReadingActions';
 
 
@@ -21,6 +22,7 @@ const initialState = {
     updating: false,
     updateFailed: false,
     updatingId: '',
+    updated: false,
     results: false,
     range: {
         start: moment().subtract(5, 'hours'),
@@ -74,8 +76,9 @@ export const FetchReadingReducer = (state = initialState, action) => {
             return {
                 ...state,
                 updating: false,
-                //updateFailed: false,
+                updateFailed: false,
                 updatingId: '',
+                updated: true,
                 reading: updateReading(state.reading, action.meta)
             };
         case UPDATE_READING_REJECTED:
@@ -89,6 +92,11 @@ export const FetchReadingReducer = (state = initialState, action) => {
             return {
                 ...state,
                 range: action.payload
+            };
+        case CLEAR_UPDATED:
+            return {
+                ...state,
+                updated: false
             };
         default:
             return state;

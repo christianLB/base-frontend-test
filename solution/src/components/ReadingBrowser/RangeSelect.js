@@ -30,7 +30,9 @@ class RangeSelect extends Component {
         const { selectedValue } = this.state;
         const { handleChange } = this;
 
-        return <FormControl>
+        return <FormControl
+            style={{margin: '10px 0 0 51px'}}
+        >
             <InputLabel htmlFor="time-helper">Time Range</InputLabel>
             <Select
                 value={selectedValue}
