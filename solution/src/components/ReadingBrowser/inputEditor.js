@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 
-// COMPONENT
+import { LoadingIndicator } from '../shared/LoadingIndicator/LoadingIndicator';
 
 export class InputEditor extends Component {
 
@@ -67,6 +67,11 @@ export class InputEditor extends Component {
         this.ref.current.select();
     }
 
+    renderBusy = () => {
+        const { busy } = this.props;
+        return <LoadingIndicator busy={busy} size={1} />;
+    }
+
     renderInput = () => {
         const { defaultValue, edit } = this.props;
         const { handleBlur, handleSubmit, handleFocus, ref, state, toggleEdit } = this;
@@ -95,11 +100,14 @@ export class InputEditor extends Component {
     }
 
     render() {
-        const { style, renderInput } = this;
+        const { style, renderInput, renderBusy } = this;
+        const { busy } = this.props;
         const input = renderInput();
+
         return(
             <div style={style}>
-                {input}
+                {busy && renderBusy()}
+                {!busy && input}
             </div>
         );
     }
@@ -110,5 +118,6 @@ InputEditor.propTypes = {
     id: PropTypes.string.isRequired,
     fieldName: PropTypes.string.isRequired,
     defaultValue: PropTypes.string.isRequired,
-    edit: PropTypes.bool.isRequired
+    edit: PropTypes.bool.isRequired,
+    busy: PropTypes.bool
 };

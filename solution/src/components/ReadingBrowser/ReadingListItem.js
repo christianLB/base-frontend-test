@@ -7,7 +7,6 @@ import TableCell from '@material-ui/core/TableCell';
 
 
 import { InputEditor } from './inputEditor';
-import { LoadingIndicator } from '../shared/LoadingIndicator/LoadingIndicator';
 import moment from 'moment';
 
 class ReadingListItem extends Component {
@@ -16,7 +15,6 @@ class ReadingListItem extends Component {
         super(props);
         this.updateReading = this.updateReading.bind(this);
         this.renderRow = this.renderRow.bind(this);
-        this.spinnerRow = this.spinnerRow.bind(this);
         this.input1 = React.createRef();
         this.input2 = React.createRef();
     }
@@ -37,25 +35,6 @@ class ReadingListItem extends Component {
         }
     }
 
-    spinnerRow()  {
-        const { id, updating, updatingId } = this.props;
-        const thisUpdating = updating && updatingId === id;
-        return (
-            thisUpdating &&
-            <Fragment>
-                <TableCell>
-                    Saving...:
-                </TableCell>
-                <TableCell>
-                    <LoadingIndicator busy={thisUpdating} top={'10'} size={1} />
-                </TableCell>
-                <TableCell>
-                    <LoadingIndicator busy={thisUpdating} top={'10'} size={1} />
-                </TableCell>
-            </Fragment>
-        );
-    }
-
     renderRow() {
         const { updateReading, input1, input2 } = this;
         const { id, timestamp, value1, value2, updating, updateFailed, updatingId } = this.props;
@@ -64,31 +43,32 @@ class ReadingListItem extends Component {
         const thisUpdating = updating && updatingId === id;
 
         return (
-            !thisUpdating &&
             <Fragment>
                 <TableCell>
                     {fromatTimestamp}
                 </TableCell>
                 <TableCell align="center">
                     <InputEditor
-                        ref={input1}
-                        onChange={updateReading}
-                        enabled={!updating}
+                        busy={thisUpdating}
                         edit={saveFailed}
+                        enabled={!updating}
                         defaultValue={parseFloat(value1).toFixed(2)}
                         fieldName={'value1'}
-                        id={id} />
+                        id={id}
+                        ref={input1}
+                        onChange={updateReading} />
 
                 </TableCell>
                 <TableCell align="center">
                     <InputEditor
-                        ref={input2}
-                        onChange={updateReading}
+                        busy={thisUpdating}
+                        defaultValue={parseFloat(value2).toFixed(2)}
                         edit={saveFailed}
                         enabled={!updating}
-                        defaultValue={parseFloat(value2).toFixed(2)}
                         fieldName={'value2'}
-                        id={id} />
+                        id={id}
+                        ref={input2}
+                        onChange={updateReading} />
                 </TableCell>
             </Fragment>
         );
@@ -96,10 +76,9 @@ class ReadingListItem extends Component {
 
 
     render() {
-        const {spinnerRow, renderRow } = this;
+        const { renderRow } = this;
         return (
             <Fragment>
-                {spinnerRow()}
                 {renderRow()}
             </Fragment>
         );
