@@ -6,22 +6,26 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 
 import { ReadingListItem } from './ReadingListItem';
 
-const renderList = (reading, updatingId, updating) => (
+const renderList = (reading, busy) => (
+    !busy &&
     <Table>
-        <TableHead>
-            <TableRow>
-                <TableCell  style={{position:'sticky'}}>Date/ Time</TableCell>
-                <TableCell  style={{position:'sticky'}}>Value1</TableCell>
-                <TableCell  style={{position:'sticky'}}>value2</TableCell>
-            </TableRow>
-        </TableHead>
-        <TableBody>
-            {reading.map(read => renderListItem(read, updatingId), updating)}
-        </TableBody>
+        {
+            <TableHead>
+                <TableRow>
+                    <TableCell>Date/ Time</TableCell>
+                    <TableCell><div className={'value1'} style={{marginLeft:'30px'}}>Value1</div></TableCell>
+                    <TableCell><div className={'value2'} style={{marginLeft:'30px'}}>value2</div></TableCell>
+                </TableRow>
+            </TableHead>
+        }
+        {
+            <TableBody>
+                {reading.map(read => renderListItem(read))}
+            </TableBody>
+        }
     </Table>
 );
 
@@ -43,11 +47,9 @@ class ReadingList extends Component {
     }
 
     render() {
-        const { reading } = this.props;
+        const { reading, busy } = this.props;
         return <Fragment>
-            <Paper>
-                {renderList(reading)}
-            </Paper>
+            {renderList(reading, busy)}
         </Fragment>;
     }
 }
@@ -55,7 +57,8 @@ class ReadingList extends Component {
 
 ReadingList.propTypes = {
     reading: PropTypes.array.isRequired,
-    classes: PropTypes.object
+    classes: PropTypes.object,
+    busy: PropTypes.bool.isRequired
 };
 
 export { ReadingList };

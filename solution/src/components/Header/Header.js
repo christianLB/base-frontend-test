@@ -1,29 +1,18 @@
 // IMPORT PACKAGE REFERENCES
 
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-
-// COMPONENT
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import { FetchingSpinner } from '../shared/FetchingSpinner/FetchingSpinner';
+import Typography from '@material-ui/core/Typography';
 
 export const Header = () => (
-    <nav className="navbar navbar-expand-lg navbar-light alert-dark">
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu">
-            <span className="navbar-toggler-icon"></span>
-        </button>
-
-        <div className="collapse navbar-collapse" id="menu">
-            <ul className="navbar-nav mr-auto">
-                <li className="nav-item">
-                    <div className="nav-link">
-                        <NavLink to='/' activeClassName='menu selected' exact={true}>ABOUT</NavLink>
-                    </div>
-                </li>
-                <li className="nav-item">
-                    <div className="nav-link">
-                        <NavLink to='/reading' activeClassName='menu selected'>APP</NavLink>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <AppBar position="static" color="default">
+        <Toolbar>
+            <Typography variant="h6" color="inherit">
+                Linkener test
+                <FetchingSpinner />
+            </Typography>
+        </Toolbar>
+    </AppBar>
 );

@@ -7,13 +7,10 @@ import { bindActionCreators } from 'redux';
 import { Chart } from './Chart';
 import { fetchReadingAction, changeRangeAction, clearUpdatedAction } from '../state/actions/ReadingActions';
 import { ReadingList } from './ReadingList';
-import { LoadingIndicator } from '../shared/LoadingIndicator/LoadingIndicator';
 import { Error } from '../shared/Error/Error';
 import { RangeSelect } from './RangeSelect';
 import Snackbar from '@material-ui/core/Snackbar';
 import Paper from '@material-ui/core/Paper';
-
-
 
 
 class ReadingBrowser extends Component {
@@ -55,42 +52,36 @@ class ReadingBrowser extends Component {
                 {
                     <Fragment>
                         <Paper>
-                            <RangeSelect onChange={changeRange} />
-                            {fetched && <Chart reading={reading}
+                            {<RangeSelect onChange={changeRange} />}
+                            {!fetching && fetched && <Chart reading={reading}
                                 width={mainCont.current.clientWidth}
                                 height={400}
-                            />
-                            }
+                            />}
                         </Paper>
                         {
                             fetchFailed && <Error message="Failed to fetch reading" />
                         }
                         {
                             results &&
-                            <ReadingList reading={reading} updatingId={updatingId}/>
+                            <ReadingList reading={reading} busy={fetching} updatingId={updatingId}/>
                         }
                         {
-                            !results && <h2 className='display-5 noresults'>No results</h2>
+                            fetched && !results && <h2 style={{textAlign: 'center', marginTop: '20px'}}>No results</h2>
                         }
+                        <Snackbar
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'left',
+                            }}
+                            variant={updateFailed?'error':'info'}
+                            open={updated||updateFailed}
+                            autoHideDuration={6000}
+                            ContentProps={{
+                                'aria-describedby': 'message-id',
+                            }}
+                            message={<span id="message-id">{updateFailed?'Saving failed...':'Reading updated.'}</span>}
+                        />
                     </Fragment>
-                }
-                {
-                    <LoadingIndicator busy={fetching} size={4} left={'50%'} />
-                }
-                {
-                    <Snackbar
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                        }}
-                        variant={updateFailed?'error':'info'}
-                        open={updated||updateFailed}
-                        autoHideDuration={6000}
-                        ContentProps={{
-                            'aria-describedby': 'message-id',
-                        }}
-                        message={<span id="message-id">{updateFailed?'Saving failed...':'Reading updated.'}</span>}
-                    />
                 }
             </div>
         );

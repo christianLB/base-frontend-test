@@ -16,11 +16,13 @@ export const AppRouter = () => (
     <BrowserRouter>
         <Fragment>
             <Header />
-            <Switch>
-                <Route path='/' component={HomePage} exact={true} />
-                <Route path='/reading' component={ReadingPage} />
-                <Redirect to="/" />
-            </Switch>
+            <div className={'container'}>
+                <Switch>
+                    <Route path='/' component={HomePage} exact={true} />
+                    <Route path='/reading' component={ReadingPage} />
+                    <Redirect to="/" />
+                </Switch>
+            </div>
         </Fragment>
     </BrowserRouter>
 );

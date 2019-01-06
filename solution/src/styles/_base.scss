@@ -47,3 +47,23 @@ body {
 .saveFailed {
     background-color: rgba(255, 65, 0, 0.6);
 }
+
+.cont {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 45px;
+    bottom: 35pX;
+}
+
+.value1 {
+    color: red;
+}
+
+.value2 {
+    color: blue;
+}
+
+.fetchingSpinner {
+
+}
