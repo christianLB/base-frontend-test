@@ -1,6 +1,7 @@
 // IMPORT PACKAGE REFERENCES
 
 import React, { Component } from 'react';
+import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 
 // COMPONENT
@@ -71,15 +72,19 @@ export class InputEditor extends Component {
         const { handleBlur, handleSubmit, handleFocus, ref, state, toggleEdit } = this;
 
         if (state.edit || edit) {
-            return <input
+            return <TextField
                 className={'editbox'}
+                margin={'normal'}
                 onKeyPress={handleSubmit}
                 onBlur={handleBlur}
                 onFocus={handleFocus}
                 type='text'
                 defaultValue={defaultValue}
                 tabIndex={0}
-                ref={ref}
+                inputRef={ref}
+                inputProps={{
+                    style: {textAlign: 'center'}
+                }}
             />;
         } else {
             return <span
