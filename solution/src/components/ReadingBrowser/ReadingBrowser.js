@@ -49,20 +49,7 @@ class ReadingBrowser extends Component {
                         }
                         {
                             results &&
-                            <Fragment>
-                                <div className="list-group animated fadeIn">
-                                    <a href="#" id={-1} className="list-group-item list-group-item-action flex-row align-items-start fixed">
-                                        <div className="d-flex w-100 justify-content-between">
-                                            <h5 className="mb-1">date/time</h5>
-                                            <h5 className="mb-1 value1">value1</h5>
-                                            <h5 className="mb-1 value2">value2</h5>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div className='roller'>
-                                    <ReadingList reading={reading} updatingId={updatingId}/>
-                                </div>
-                            </Fragment>
+                            <ReadingList reading={reading} updatingId={updatingId}/>
                         }
                         {
                             !results && <h2 className='display-5 noresults'>No results</h2>

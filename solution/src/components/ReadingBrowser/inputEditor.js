@@ -17,6 +17,14 @@ export class InputEditor extends Component {
 
         this.state = {edit:false};
         this.ref = React.createRef();
+
+        this.style = {
+            width: '100px',
+            height: '40px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+        };
     }
 
     toggleEdit(e) {
@@ -74,16 +82,20 @@ export class InputEditor extends Component {
                 ref={ref}
             />;
         } else {
-            return <h5
+            return <span
+                style={{cursor: 'pointer'}}
                 onClick={toggleEdit}
-                className="mb-1">{defaultValue}</h5>;
+            >{defaultValue}</span>;
         }
     }
 
     render() {
-        const input = this.renderInput();
+        const { style, renderInput } = this;
+        const input = renderInput();
         return(
-            input
+            <div style={style}>
+                {input}
+            </div>
         );
     }
 }

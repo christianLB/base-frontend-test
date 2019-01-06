@@ -1,10 +1,41 @@
 // IMPORT PACKAGE REFERENCES=
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-
-// IMPORT PROJECT REFERENCES
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
 import { ReadingListItem } from './ReadingListItem';
+
+const renderList = (reading, updatingId, updating) => (
+    <Table>
+        <TableHead>
+            <TableRow>
+                <TableCell  style={{position:'sticky'}}>Date/ Time</TableCell>
+                <TableCell  style={{position:'sticky'}}>Value1</TableCell>
+                <TableCell  style={{position:'sticky'}}>value2</TableCell>
+            </TableRow>
+        </TableHead>
+        <TableBody>
+            {reading.map(read => renderListItem(read, updatingId), updating)}
+        </TableBody>
+    </Table>
+);
+
+
+const renderListItem = (read) => (
+    <TableRow key={read.id}>
+        <ReadingListItem
+            timestamp={read.timestamp}
+            value1={read.value1}
+            value2={read.value2}
+            id={read.id}
+        />
+    </TableRow>
+);
 
 class ReadingList extends Component {
     constructor(props) {
@@ -14,31 +45,17 @@ class ReadingList extends Component {
     render() {
         const { reading } = this.props;
         return <Fragment>
-            {renderList(reading)}
+            <Paper>
+                {renderList(reading)}
+            </Paper>
         </Fragment>;
     }
 }
 
-const renderList = (reading, updatingId, updating) => (
-    <div className="list-group animated fadeIn">
-        {reading.map(read => renderListItem(read, updatingId), updating)}
-    </div>
-);
-
-
-const renderListItem = (read) => (
-    <Fragment key={read.id}>
-        <ReadingListItem
-            timestamp={read.timestamp}
-            value1={read.value1}
-            value2={read.value2}
-            id={read.id}
-        />
-    </Fragment>
-);
 
 ReadingList.propTypes = {
-    reading: PropTypes.array.isRequired
+    reading: PropTypes.array.isRequired,
+    classes: PropTypes.object
 };
 
 export { ReadingList };
