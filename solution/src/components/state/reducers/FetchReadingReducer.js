@@ -26,7 +26,8 @@ const initialState = {
     results: false,
     range: {
         start: moment().subtract(5, 'hours'),
-        end: moment()
+        end: moment(),
+        hours: 0
     }
 };
 

@@ -23,7 +23,8 @@ class RangeSelect extends Component {
 
         const range = {
             start: moment().subtract(e.target.value, 'hours'),
-            end: moment()
+            end: moment(),
+            hours: e.target.value
         };
         this.props.onChange(range);
     }

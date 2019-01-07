@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { updateReadingAction } from '../state/actions/ReadingActions';
 
 import moment from 'moment';
+import Button from '@material-ui/core/Button';
 import { LineChart } from 'react-easy-chart';
 
 class Chart extends Component {
@@ -12,8 +13,13 @@ class Chart extends Component {
         super(props);
 
         this.update = this.update.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+        this.handleRight = this.handleRight.bind(this);
+        this.handleLeft = this.handleLeft.bind(this);
         this.state = {
-            data: this.getLines2()
+            data: this.getLines2(),
+            zoomRange: [0, 5],
+            zoom: false
         };
     }
 
@@ -39,7 +45,20 @@ class Chart extends Component {
 
     getLine(fieldName) {
         const { reading } = this.props;
-        return reading.map((elem) => {
+        const { state } = this;
+        const zoomRange = state.zoomRange;
+        let out = [];
+
+        if (state.zoom) {
+            out = reading.filter((el, i) => {
+                return i >= zoomRange[0] && i <= zoomRange[1];
+            });
+            // console.log(zoomRange[0], zoomRange[1], out);
+        } else {
+            out = reading;
+        }
+        out = out.reverse();
+        return out.map((elem) => {
             return {x: moment(elem.timestamp).format('DD-MMM-YY HH:mm'), y: parseFloat(parseFloat(elem[fieldName]).toFixed(2))};
         });
     }
@@ -66,15 +85,57 @@ class Chart extends Component {
         });
     }
 
+    handleClick() {
+        const { state } = this;
+        this.setState({
+            zoom: !state.zoom,
+            zoomRange: [0, 5]
+        });
+    }
+
+    handleRight() {
+        const increment = 1;
+        const { state } = this;
+        const newZoom = [state.zoomRange[0] + increment, state.zoomRange[1] + increment];
+
+        this.setState({
+            zoomRange: newZoom
+        });
+    }
+
+    handleLeft() {
+        const increment = 1;
+        const { state } = this;
+        const newZoom = [state.zoomRange[0] - increment, state.zoomRange[1] - increment];
+
+        this.setState({
+            zoomRange: newZoom
+        });
+    }
 
     render() {
-        const { width, height } = this.props;
+        const { width, height, range } = this.props;
+        const { handleClick, handleRight, handleLeft, state } = this;
         return <Fragment>
+            <Button
+                onClick={handleClick}
+            >Zoom
+            </Button>
+            <Button
+                onClick={handleLeft}
+            >
+                {'<---'}
+            </Button>
+            <Button
+                onClick={handleRight}
+            >
+                {'--->'}
+            </Button>
             <LineChart
                 axes
                 grid
                 verticalGrid
-                xTicks={5}
+                xTicks={state.zoom?30:range.hours}
                 xType={'time'}
                 datePattern={'%d-%b-%y %H:%M'}
                 yDomainRange={[-20, 20]}
@@ -94,12 +155,13 @@ Chart.propTypes = {
     height: PropTypes.number.isRequired,
     reading: PropTypes.array.isRequired,
     updatingId: PropTypes.bool,
+    range: PropTypes.object.isRequired,
     updateReadingAction: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => {
-    const { reading, updating } = state.readings;
+    const { reading, updating, range } = state.readings;
 
-    return { reading, updating };
+    return { reading, updating, range };
 };
 const mapDispatchToProps = dispatch => (
     bindActionCreators({ updateReadingAction }, dispatch)

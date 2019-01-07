@@ -38,7 +38,7 @@ class ReadingListItem extends Component {
     renderRow() {
         const { updateReading, input1, input2 } = this;
         const { id, timestamp, value1, value2, updating, updateFailed, updatingId } = this.props;
-        const fromatTimestamp = moment(timestamp).format('D/M/YYYY, h:mm');
+        const fromatTimestamp = moment(timestamp).format('D/M/YYYY, h:mm a');
         const saveFailed = updateFailed && updatingId === id;
         const thisUpdating = updating && updatingId === id;
 
