@@ -18,8 +18,8 @@ export const AppRouter = () => (
             <Header />
             <div className={'container'}>
                 <Switch>
-                    <Route path='/' component={HomePage} exact={true} />
-                    <Route path='/reading' component={ReadingPage} />
+                    <Route path='/' component={ReadingPage} exact={true} />
+                    <Route path='/home' component={HomePage} />
                     <Redirect to="/" />
                 </Switch>
             </div>

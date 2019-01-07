@@ -68,7 +68,7 @@ class Chart extends Component {
         } else {
             out = reading;
         }
-        out = out.reverse();
+        //out = out.reverse();
         return out.map((elem) => {
             return {x: moment(elem.timestamp).format('DD-MMM-YY HH:mm'), y: parseFloat(parseFloat(elem[fieldName]).toFixed(2))};
         });
@@ -148,9 +148,9 @@ class Chart extends Component {
                 </Button>
                 {
                     state.zoom && reading.length > 0 &&
-                      <div style={{margin: '0px 0px 0px 20px', width: '400px'}}>
+                      <div style={{margin: '0px 0px 0px 50px', width: '400px'}}>
                           <InputRange
-                              maxValue={reading.length}
+                              maxValue={reading.length-1}
                               minValue={0}
                               value={value}
                               allowSameValues={false}
