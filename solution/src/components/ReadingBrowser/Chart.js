@@ -20,6 +20,7 @@ class Chart extends Component {
         this.handleRight = this.handleRight.bind(this);
         this.handleLeft = this.handleLeft.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.formatLabel = this.formatLabel.bind(this);
         this.state = {
             data: this.getLines2(),
             zoomRange: [0, 5],
@@ -127,9 +128,15 @@ class Chart extends Component {
         this.setState({value: v});
     }
 
+    formatLabel(a) {
+        if(this.props.reading[a]) {
+            return moment(this.props.reading[a].timestamp).format('DD-MMM-YY HH:mm');
+        }
+    }
+
     render() {
         const { height, range, width, reading } = this.props;
-        const { handleClick, state, style, handleChange } = this;
+        const { handleClick, state, style, handleChange, formatLabel } = this;
         const { value } = state;
 
         return <Fragment>
@@ -146,6 +153,9 @@ class Chart extends Component {
                               maxValue={reading.length}
                               minValue={0}
                               value={value}
+                              allowSameValues={false}
+                              draggableTrack={true}
+                              formatLabel={formatLabel}
                               style={{marginLeft: '15px'}}
                               onChange={handleChange} />
                       </div>
