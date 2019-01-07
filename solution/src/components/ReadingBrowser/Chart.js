@@ -6,7 +6,10 @@ import { updateReadingAction } from '../state/actions/ReadingActions';
 
 import moment from 'moment';
 import Button from '@material-ui/core/Button';
+import InputRange from 'react-input-range';
 import { LineChart } from 'react-easy-chart';
+
+import 'react-input-range/lib/css/index.css';
 
 class Chart extends Component {
     constructor(props) {
@@ -16,9 +19,11 @@ class Chart extends Component {
         this.handleClick = this.handleClick.bind(this);
         this.handleRight = this.handleRight.bind(this);
         this.handleLeft = this.handleLeft.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.state = {
             data: this.getLines2(),
             zoomRange: [0, 5],
+            value: {min: 0, max: 5},
             zoom: false,
             width: 0
         };
@@ -51,12 +56,12 @@ class Chart extends Component {
     getLine(fieldName) {
         const { reading } = this.props;
         const { state } = this;
-        const zoomRange = state.zoomRange;
+        const value = state.value;
         let out = [];
 
         if (state.zoom) {
             out = reading.filter((el, i) => {
-                return i >= zoomRange[0] && i <= zoomRange[1];
+                return i >= value.min && i <= value.max;
             });
             // console.log(zoomRange[0], zoomRange[1], out);
         } else {
@@ -94,34 +99,39 @@ class Chart extends Component {
         const { state } = this;
         this.setState({
             zoom: !state.zoom,
-            zoomRange: [0, 5]
+            value: {min: 0, max: 5}
         });
     }
 
     handleRight() {
         const increment = 1;
         const { state } = this;
-        const newZoom = [state.zoomRange[0] + increment, state.zoomRange[1] + increment];
+        const newZoom = {min: state.value.min + increment, max: state.value.max + increment};
 
         this.setState({
-            zoomRange: newZoom
+            value: newZoom
         });
     }
 
     handleLeft() {
         const increment = 1;
         const { state } = this;
-        const newZoom = [state.zoomRange[0] - increment, state.zoomRange[1] - increment];
+        const newZoom = [state.value.min - increment, state.value.max - increment];
 
         this.setState({
-            zoomRange: newZoom
+            value: newZoom
         });
     }
 
+    handleChange(v) {
+        this.setState({value: v});
+    }
+
     render() {
-        const { height, range, width } = this.props;
-        const { handleClick, handleRight, handleLeft, state, style } = this;
-        
+        const { height, range, width, reading } = this.props;
+        const { handleClick, state, style, handleChange } = this;
+        const { value } = state;
+
         return <Fragment>
             <div className="controls" style={style}>
                 <Button
@@ -130,20 +140,14 @@ class Chart extends Component {
                 >Zoom
                 </Button>
                 {
-                    state.zoom &&
-                      <div>
-                          <Button
-                              variant={'contained'}
-                              onClick={handleLeft}
-                          >
-                              {'<---'}
-                          </Button>
-                          <Button
-                              variant={'contained'}
-                              onClick={handleRight}
-                          >
-                              {'--->'}
-                          </Button>
+                    state.zoom && reading.length > 0 &&
+                      <div style={{margin: '0px 0px 0px 20px', width: '400px'}}>
+                          <InputRange
+                              maxValue={reading.length}
+                              minValue={0}
+                              value={value}
+                              style={{marginLeft: '15px'}}
+                              onChange={handleChange} />
                       </div>
                 }
             </div>
