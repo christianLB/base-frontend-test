@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import { updateReadingAction } from '../state/actions/ReadingActions';
 
 import moment from 'moment';
-import Button from '@material-ui/core/Button';
 import InputRange from 'react-input-range';
 import { LineChart } from 'react-easy-chart';
 
@@ -17,20 +16,21 @@ class Chart extends Component {
 
         this.update = this.update.bind(this);
         this.handleClick = this.handleClick.bind(this);
-        this.handleRight = this.handleRight.bind(this);
-        this.handleLeft = this.handleLeft.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.formatLabel = this.formatLabel.bind(this);
         this.state = {
             data: this.getLines2(),
             zoomRange: [0, 5],
-            value: {min: 0, max: 5},
-            zoom: false,
+            value: {min: 0, max: 1},
+            zoom: true,
             width: 0
         };
 
         this.style = {
-            position: 'absolute'
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center'
         };
     }
 
@@ -62,13 +62,12 @@ class Chart extends Component {
 
         if (state.zoom) {
             out = reading.filter((el, i) => {
-                return i >= value.min && i <= value.max;
+                //return i >= value.min && i <= value.max;
+                return i <= reading.length-1-value.min && i >= reading.length-1-value.max;
             });
-            // console.log(zoomRange[0], zoomRange[1], out);
         } else {
             out = reading;
         }
-        //out = out.reverse();
         return out.map((elem) => {
             return {x: moment(elem.timestamp).format('DD-MMM-YY HH:mm'), y: parseFloat(parseFloat(elem[fieldName]).toFixed(2))};
         });
@@ -104,78 +103,62 @@ class Chart extends Component {
         });
     }
 
-    handleRight() {
-        const increment = 1;
-        const { state } = this;
-        const newZoom = {min: state.value.min + increment, max: state.value.max + increment};
-
-        this.setState({
-            value: newZoom
-        });
-    }
-
-    handleLeft() {
-        const increment = 1;
-        const { state } = this;
-        const newZoom = [state.value.min - increment, state.value.max - increment];
-
-        this.setState({
-            value: newZoom
-        });
-    }
-
     handleChange(v) {
         this.setState({value: v});
     }
 
     formatLabel(a) {
-        if(this.props.reading[a]) {
-            return moment(this.props.reading[a].timestamp).format('DD-MMM-YY HH:mm');
+        if(this.props.reading[this.props.reading.length-1-a]) {
+            return moment(this.props.reading[this.props.reading.length-1-a].timestamp).format('DD-MMM-YY h:m a');
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.props.reading.length > 0 && this.state.value.max == 1) {
+            this.setState({
+                value: {min: 0, max: this.props.reading.length-1}
+            });
         }
     }
 
     render() {
         const { height, range, width, reading } = this.props;
-        const { handleClick, state, style, handleChange, formatLabel } = this;
+        const { state, handleChange, formatLabel, style } = this;
         const { value } = state;
 
         return <Fragment>
-            <div className="controls" style={style}>
-                <Button
-                    variant={'contained'}
-                    onClick={handleClick}
-                >Zoom
-                </Button>
+
+            <div style={{...style, width}}>
                 {
                     state.zoom && reading.length > 0 &&
-                      <div style={{margin: '0px 0px 0px 50px', width: '400px'}}>
-                          <InputRange
-                              maxValue={reading.length-1}
-                              minValue={0}
-                              value={value}
-                              allowSameValues={false}
-                              draggableTrack={true}
-                              formatLabel={formatLabel}
-                              style={{marginLeft: '15px'}}
-                              onChange={handleChange} />
-                      </div>
+                    <div style={{width: width - width * 0.10, marginBottom: '15px' }}>
+                        <InputRange
+                            maxValue={reading.length > 0 ? reading.length : 1}
+                            minValue={0}
+                            value={value}
+                            allowSameValues={false}
+                            draggableTrack={true}
+                            formatLabel={formatLabel}
+                            style={{marginLeft: '15px'}}
+                            onChange={handleChange} />
+                    </div>
                 }
+                <LineChart
+                    axes
+                    grid
+                    verticalGrid
+                    xTicks={state.zoom?30:range.hours}
+                    xType={'time'}
+                    datePattern={'%d-%b-%y %H:%M'}
+                    yDomainRange={[-20, 20]}
+                    axisLabels={{x: 'Hour', y: 'Reading'}}
+                    lineColors={['red', 'blue']}
+                    height={height}
+                    width={width}
+                    interpolate={'cardinal'}
+                    data={this.getLines()}
+                />
             </div>
-            <LineChart
-                axes
-                grid
-                verticalGrid
-                xTicks={state.zoom?30:range.hours}
-                xType={'time'}
-                datePattern={'%d-%b-%y %H:%M'}
-                yDomainRange={[-20, 20]}
-                axisLabels={{x: 'Hour', y: 'Reading'}}
-                lineColors={['red', 'blue']}
-                height={height}
-                width={width}
-                interpolate={'cardinal'}
-                data={this.getLines()}
-            />
         </Fragment>;
     }
 }
