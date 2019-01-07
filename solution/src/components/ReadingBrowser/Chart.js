@@ -19,7 +19,12 @@ class Chart extends Component {
         this.state = {
             data: this.getLines2(),
             zoomRange: [0, 5],
-            zoom: false
+            zoom: false,
+            width: 0
+        };
+
+        this.style = {
+            position: 'absolute'
         };
     }
 
@@ -114,23 +119,34 @@ class Chart extends Component {
     }
 
     render() {
-        const { width, height, range } = this.props;
-        const { handleClick, handleRight, handleLeft, state } = this;
+        const { height, range, width } = this.props;
+        const { handleClick, handleRight, handleLeft, state, style } = this;
+        
         return <Fragment>
-            <Button
-                onClick={handleClick}
-            >Zoom
-            </Button>
-            <Button
-                onClick={handleLeft}
-            >
-                {'<---'}
-            </Button>
-            <Button
-                onClick={handleRight}
-            >
-                {'--->'}
-            </Button>
+            <div className="controls" style={style}>
+                <Button
+                    variant={'contained'}
+                    onClick={handleClick}
+                >Zoom
+                </Button>
+                {
+                    state.zoom &&
+                      <div>
+                          <Button
+                              variant={'contained'}
+                              onClick={handleLeft}
+                          >
+                              {'<---'}
+                          </Button>
+                          <Button
+                              variant={'contained'}
+                              onClick={handleRight}
+                          >
+                              {'--->'}
+                          </Button>
+                      </div>
+                }
+            </div>
             <LineChart
                 axes
                 grid
@@ -151,11 +167,12 @@ class Chart extends Component {
 }
 
 Chart.propTypes = {
-    width: PropTypes.number.isRequired,
+    width: PropTypes.number,
     height: PropTypes.number.isRequired,
     reading: PropTypes.array.isRequired,
     updatingId: PropTypes.bool,
     range: PropTypes.object.isRequired,
+    ref: PropTypes.object,
     updateReadingAction: PropTypes.func.isRequired
 };
 const mapStateToProps = (state) => {

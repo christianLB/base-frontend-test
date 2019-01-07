@@ -2,6 +2,7 @@ body {
     background-color: white;
     font-family: $font-family;
     height: 100%;
+    overflow: hidden;
 }
 
 .animated {
@@ -66,4 +67,20 @@ body {
 
 .fetchingSpinner {
 
+}
+
+.scroll {
+    height: 300px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-top: 10px;}
+
+.controls {
+  position: absolute;
+  height: 43px;
+  width: 268px;
+  display: flex;
+  top: 98px;
+  left: 45%;
+  align-items: baseline;
 }

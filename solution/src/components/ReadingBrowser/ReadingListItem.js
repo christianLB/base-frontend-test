@@ -47,7 +47,7 @@ class ReadingListItem extends Component {
                 <TableCell>
                     {fromatTimestamp}
                 </TableCell>
-                <TableCell align="center">
+                <TableCell align="center" className={'value1'}>
                     <InputEditor
                         busy={thisUpdating}
                         edit={saveFailed}
@@ -59,7 +59,7 @@ class ReadingListItem extends Component {
                         onChange={updateReading} />
 
                 </TableCell>
-                <TableCell align="center">
+                <TableCell align="center" className={'value2'}>
                     <InputEditor
                         busy={thisUpdating}
                         defaultValue={parseFloat(value2).toFixed(2)}

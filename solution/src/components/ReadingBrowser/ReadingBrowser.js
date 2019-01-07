@@ -19,10 +19,14 @@ class ReadingBrowser extends Component {
         super(props);
         this.mainCont = React.createRef();
         this.changeRange = this.changeRange.bind(this);
+        this.state = {
+            chartWidth: 0
+        };
     }
 
     componentDidMount() {
         this.props.fetchReadingAction(this.props.range);
+        this.setState({chartWidth: this.mainCont.current.clientWidth});
     }
 
     changeRange(range) {
@@ -45,7 +49,8 @@ class ReadingBrowser extends Component {
 
     render() {
         const { reading, fetched, fetching, fetchFailed, updatingId, results, updated, updateFailed } = this.props;
-        const { mainCont, changeRange } = this;
+        const { mainCont, changeRange, state } = this;
+        const { chartWidth } = state;
         updated && clearTimeout();
         return (
             <div ref={mainCont}>
@@ -53,9 +58,9 @@ class ReadingBrowser extends Component {
                     <Fragment>
                         <Paper>
                             {<RangeSelect onChange={changeRange} />}
-                            {!fetching && fetched && <Chart reading={reading}
-                                width={mainCont.current.clientWidth}
+                            {<Chart reading={reading}
                                 height={400}
+                                width={chartWidth}
                             />}
                         </Paper>
                         {
@@ -63,7 +68,9 @@ class ReadingBrowser extends Component {
                         }
                         {
                             results &&
-                            <ReadingList reading={reading} busy={fetching} updatingId={updatingId}/>
+                            <div className={'scroll'}>
+                                <ReadingList reading={reading} busy={fetching} updatingId={updatingId}/>
+                            </div>
                         }
                         {
                             fetched && !results && <h2 style={{textAlign: 'center', marginTop: '20px'}}>No results</h2>

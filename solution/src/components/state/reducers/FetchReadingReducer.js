@@ -48,7 +48,8 @@ export const FetchReadingReducer = (state = initialState, action) => {
                 reading: [],
                 fetching: true,
                 fetched: false,
-                fetchFailed: false
+                fetchFailed: false,
+                results: false
             };
         case FETCH_READING_FULFILLED:
             return {
