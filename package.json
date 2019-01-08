@@ -17,7 +17,7 @@
     "serve:prod": "npm run build:prod && live-server ./public",
     "lint": "eslint .; exit 0",
     "lint:fix": "eslint . --fix; exit 0",
-    "start": "npm run serve:dev",
+    "start": "react-scripts start",
     "test": "echo \"No tests available\"; exit 0",
     "webpack-defaults": "webpack-defaults"
   },
@@ -60,9 +60,6 @@
     "@material-ui/core": "^3.8.1",
     "@material-ui/icons": "^3.0.1",
     "@material-ui/styles": "^3.0.0-alpha.6",
-    "bootstrap": "^4.0.0",
-    "cross-fetch": "^3.0.0",
-    "jquery": "^3.3.1",
     "moment": "^2.23.0",
     "popper.js": "^1.12.9",
     "prop-types": "^15.6.0",
@@ -75,6 +72,7 @@
     "react-sparklines": "^1.7.0",
     "redux": "^3.7.2",
     "redux-promise-middleware": "^5.0.0",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "react-scripts": "*1.1.1"
   }
 }
