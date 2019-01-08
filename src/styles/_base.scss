@@ -1,0 +1,86 @@
+body {
+    background-color: white;
+    font-family: $font-family;
+    height: 100%;
+    overflow: hidden;
+}
+
+.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+ }
+
+@keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+ }
+
+ .fadeIn {
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+ }
+
+ .navbar {
+     border-bottom: 4px solid dodgerblue;
+ }
+
+ .roller  {
+     height: 300px;
+     overflow-y: scroll;
+ }
+
+ .editbox {
+    text-align: center;
+ }
+
+ .value1 {
+    color: red !important;
+ }
+
+ .value2 {
+   color: blue !important;
+ }
+
+.noresults {text-align: center;}
+
+.saveFailed {
+    background-color: rgba(255, 65, 0, 0.6);
+}
+
+.cont {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 45px;
+    bottom: 35pX;
+}
+
+.value1 {
+    color: red;
+}
+
+.value2 {
+    color: blue;
+}
+
+.fetchingSpinner {
+
+}
+
+.scroll {
+    height: 300px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-top: 10px;}
+
+.controls {
+  position: absolute;
+  height: 43px;
+  width: 800px;
+  display: flex;
+  top: 98px;
+  left: 45%;
+  align-items: center;
+}
