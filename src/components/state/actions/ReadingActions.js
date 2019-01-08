@@ -1,7 +1,3 @@
-// import { fetchReading } from '../../../services/ZipCodeService';
-
-// FETCH READING ACTION NAMES
-
 export const FETCH_READING_PENDING = 'FETCH_READING_PENDING';
 export const FETCH_READING_FULFILLED = 'FETCH_READING_FULFILLED';
 export const FETCH_READING_FAILURE = 'FETCH_READING_FAILURE';
@@ -15,18 +11,23 @@ export const RANGE_CHANGE = 'RANGE_CHANGE';
 export const CLEAR_UPDATED = 'CLEAR_UPDATED';
 
 const apiUrl = 'http://localhost:8080/reading';
-const dateFormat = 'YYYY-MM-DDTHH:mm:ss';
+// const dateFormat = 'YYYY-MM-DDTHH:mm:ss';
+import data from './data.json';
 
 export const changeRangeAction = (range) => ({
     type: RANGE_CHANGE,
     payload: range
 });
 
-export const fetchReadingAction = (range) => ({
+export const fetchReadingAction = () => ({
     type: FETCH_READING,
     payload: () => {
-        return fetch(`${apiUrl}?start=${range.start.format(dateFormat)}&end=${range.end.format(dateFormat)}`)
-            .then(response => response.json());
+        //return fetch(`${apiUrl}?start=${range.start.format(dateFormat)}&end=${range.end.format(dateFormat)}`)
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(data);
+            }, 2000);
+        });
     }
 });
 
